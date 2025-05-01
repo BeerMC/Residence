@@ -1620,33 +1620,24 @@ public class ResidencePlayerListener implements Listener {
     }
 
     private static boolean canRide(Entity entity) {
-        switch (CMIEntityType.get(entity)) {
-        case HORSE:
-        case DONKEY:
-        case PIG:
-        case LLAMA:
-        case TRADER_LLAMA:
-        case STRIDER:
-        case SKELETON_HORSE:
-        case ZOMBIE_HORSE:
-        case MULE:
-        case CAMEL:
-            return true;
-        default:
-            return false;
-        }
+        if(entity == null) return false;
+        CMIEntityType type = CMIEntityType.get(entity);
+        if(type == null) return false;
+        return switch (type) {
+            case HORSE, DONKEY, PIG, LLAMA, TRADER_LLAMA, STRIDER, SKELETON_HORSE, ZOMBIE_HORSE, MULE, CAMEL -> true;
+            default -> false;
+        };
 
     }
 
     private static boolean canHaveContainer(Entity entity) {
-        switch (CMIEntityType.get(entity)) {
-        case HORSE:
-        case DONKEY:
-        case LLAMA:
-            return true;
-        default:
-            return false;
-        }
+        if(entity == null) return false;
+        CMIEntityType type = CMIEntityType.get(entity);
+        if(type == null) return false;
+        return switch (type) {
+            case HORSE, DONKEY, LLAMA -> true;
+            default -> false;
+        };
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -1720,6 +1711,7 @@ public class ResidencePlayerListener implements Listener {
 
         CMIEntityType type = CMIEntityType.get(ent);
 
+        if(type == null) return;
         if (!type.equals(CMIEntityType.CHEST_MINECART) &&
             !type.equals(CMIEntityType.HOPPER_MINECART) &&
             !type.equals(CMIEntityType.ALLAY))
